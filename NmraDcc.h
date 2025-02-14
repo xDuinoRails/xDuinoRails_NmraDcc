@@ -233,6 +233,8 @@ extern struct countOf_t countOf;
   Released under BSD 2-Clause "Simplified" License.
 */
 
+#define MM_QUEUE_LENGTH	10
+
 enum DataGramState
 {
 	DataGramState_Reading,
@@ -288,6 +290,14 @@ struct MaerklinMotorolaData {
 class NmraDcc
 {
 private:
+    int pin_mm;
+    unsigned long last_tm = 0;
+    unsigned long sync_tm = 0;
+    bool sync = false;
+    char timings_pos = 0;
+    char DataQueueWritePosition = 0;
+    MaerklinMotorolaData DataQueue[MM_QUEUE_LENGTH];
+    
     DCC_MSG Msg ;
 
 public:
