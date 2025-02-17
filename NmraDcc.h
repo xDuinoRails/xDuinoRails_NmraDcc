@@ -31,6 +31,8 @@
 //                       and new signature of notifyDccSpeed and notifyDccFunc
 //            2017-11-29 Ken West (kgw4449@gmail.com):
 //                       Added method and callback headers.
+//            2025-02-17 Olivier Chatelain (olivier.chatelain@gmail.com):
+//                       First merge with the "MotorolaMaerklin" library.
 //
 //------------------------------------------------------------------------
 //
