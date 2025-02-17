@@ -25,7 +25,7 @@ CVPair FactoryDefaultCVs [] =
 //  {CV_29_CONFIG, CV29_EXT_ADDRESSING | CV29_F0_LOCATION}, // Long  Address 28/128 Speed Steps  
 };
 
-NmraDcc  Dcc ;
+NmraDcc Dcc(DCC_PIN) ;
 
 uint8_t FactoryDefaultCVIndex = 0;
 

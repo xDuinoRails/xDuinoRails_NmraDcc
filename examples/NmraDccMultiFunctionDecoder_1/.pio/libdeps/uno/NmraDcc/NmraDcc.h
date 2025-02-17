@@ -31,13 +31,11 @@
 //                       and new signature of notifyDccSpeed and notifyDccFunc
 //            2017-11-29 Ken West (kgw4449@gmail.com):
 //                       Added method and callback headers.
-//            2025-02-17 Olivier Chatelain (olivier.chatelain@gmail.com):
-//                       First merge with the "MotorolaMaerklin" library.
 //
 //------------------------------------------------------------------------
 //
 // purpose:   Provide a simplified interface to decode NMRA DCC packets
-//			  and build DCC MultiFunction and Stationary Decoders
+//			  and build DCC MutliFunction and Stationary Decoders
 //
 //------------------------------------------------------------------------
 
@@ -67,8 +65,8 @@
 
 typedef struct
 {
-    uint8_t Size ;
-    uint8_t PreambleBits ;
+    uint8_t	Size ;
+    uint8_t	PreambleBits ;
     uint8_t Data[MAX_DCC_MESSAGE_LEN] ;
 } DCC_MSG ;
 
@@ -114,7 +112,7 @@ typedef struct
 #define CV_VERSION_ID                          7
 #define CV_MANUFACTURER_ID                     8
 #define CV_29_CONFIG                          29
-#define CV_MANUFACTURER_START                 33
+#define CV_MANUFACTURER_START				  33
 
 #if defined(ESP32)
     #include <esp_spi_flash.h>
@@ -229,92 +227,20 @@ typedef struct countOf_t
 extern struct countOf_t countOf;
 #endif
 
-/*
-  MaerklinMotorola.h - Library for decoding the signals from the Märklin-Motorola-protocol. 
-  Created by Laserlicht, Februar 27, 2018.
-  Released under BSD 2-Clause "Simplified" License.
-*/
-
-#define MM_QUEUE_LENGTH	10
-
-enum DataGramState
-{
-	DataGramState_Reading,
-	DataGramState_ReadyToParse,
-	DataGramState_Parsed,
-	DataGramState_Validated,
-	DataGramState_Finished,
-	DataGramState_Error,
-};
-
-enum MM2DirectionState
-{
-	MM2DirectionState_Unavailable,
-	MM2DirectionState_Forward,
-	MM2DirectionState_Backward,
-};
-
-enum MM2DecoderState
-{
-	MM2DecoderState_Unavailable,
-	MM2DecoderState_Red,
-	MM2DecoderState_Green,
-};
-
-struct MaerklinMotorolaData {
-  byte Trits[9];
-  long TimeStamp;
-  int  Timings[35];
-  unsigned long tm_package_delta;
-  MM2DirectionState MM2Direction;
-  
-  unsigned char Address;
-  
-  unsigned char Speed;
-  unsigned char Step;
-  unsigned char MM2FunctionIndex;
-
-  unsigned char SubAddress;
-  unsigned char PortAddress; // verbose "port" address (1 to 256 / 320)
-
-  DataGramState State;
-  
-  bool Function;
-  bool Stop;
-  bool ChangeDir;
-  bool MagnetState; //with off normally all are switched off
-  MM2DecoderState DecoderState; // red (false) or green (true)
-  bool IsMagnet;
-  bool IsMM2;
-  bool IsMM2FunctionOn;
-};
-
 class NmraDcc
 {
 private:
-    int pin_mm;
-    unsigned long last_tm = 0;
-    unsigned long sync_tm = 0;
-    bool sync = false;
-    char timings_pos = 0;
-    char DataQueueWritePosition = 0;
-    MaerklinMotorolaData DataQueue[MM_QUEUE_LENGTH];
-    
     DCC_MSG Msg ;
 
 public:
-    NmraDcc(int p);
-    void PinChange();
-    MaerklinMotorolaData* GetData();
-    void Parse();
-
+    NmraDcc();
 
 // Flag values to be logically ORed together and passed into the init() method
-#define FLAGS_MY_ADDRESS_ONLY        0x01   // Only process DCC Packets with My Address
-#define FLAGS_AUTO_FACTORY_DEFAULT   0x02   // Call notifyCVResetFactoryDefault() if CV 7 & 8 == 255
-#define FLAGS_SETCV_CALLED           0x10   // Only used internally !!
-#define FLAGS_OUTPUT_ADDRESS_MODE    0x40   // CV 29/541 bit 6
-#define FLAGS_DCC_ACCESSORY_DECODER  0x80   // CV 29/541 bit 7
+#define FLAGS_MY_ADDRESS_ONLY        0x01	// Only process DCC Packets with My Address
+#define FLAGS_AUTO_FACTORY_DEFAULT   0x02	// Call notifyCVResetFactoryDefault() if CV 7 & 8 == 255
+#define FLAGS_SETCV_CALLED           0x10   // only used internally !!
+#define FLAGS_OUTPUT_ADDRESS_MODE    0x40  // CV 29/541 bit 6
+#define FLAGS_DCC_ACCESSORY_DECODER  0x80  // CV 29/541 bit 7
 
 // Flag Bits that are cloned from CV29 relating the DCC Accessory Decoder
 #define FLAGS_CV29_BITS		(FLAGS_OUTPUT_ADDRESS_MODE | FLAGS_DCC_ACCESSORY_DECODER)
@@ -364,7 +290,7 @@ public:
      *                                                          and a single address refers to all 4 outputs.
      *                                                          Setting FLAGS_OUTPUT_ADDRESS_MODE causes each
      *                                                          address to refer to a single output.
-     *    OpsModeAddressBaseCV  - Ops Mode base address. 0 or CV lsb(+1 msb) with offset address.
+     *    OpsModeAddressBaseCV  - Ops Mode base address. Set it to 0?
      *
      *  Returns:
      *    None.
@@ -381,7 +307,7 @@ public:
      *    VersionId             - Version ID returned in CV 7.
      *    Flags                 - ORed flags beginning with FLAGS_...
      *                            FLAGS_DCC_ACCESSORY_DECODER will be set for init() call.
-     *    OpsModeAddressBaseCV  - Ops Mode base address. 0 or CV lsb(+1 msb) with offset address.
+     *    OpsModeAddressBaseCV  - Ops Mode base address. Set it to 0?
      *
      *  Returns:
      *    None.
@@ -604,8 +530,8 @@ extern void    notifyDccFunc (uint16_t Addr, DCC_ADDR_TYPE AddrType, FN_GROUP Fu
  *  Returns:
  *    None
  */
-extern void    notifyDccAccTurnoutBoard (uint16_t BoardAddr, uint8_t OutputPair, uint8_t Direction, uint8_t OutputPower) __attribute__ ( (weak));
 
+extern void    notifyDccAccTurnoutBoard (uint16_t BoardAddr, uint8_t OutputPair, uint8_t Direction, uint8_t OutputPower) __attribute__ ( (weak));
 /*+
  *  notifyDccAccTurnoutOutput() Output oriented callback for a turnout accessory decoder.
  *                              Most useful when CV29_OUTPUT_ADDRESS_MODE IS set.

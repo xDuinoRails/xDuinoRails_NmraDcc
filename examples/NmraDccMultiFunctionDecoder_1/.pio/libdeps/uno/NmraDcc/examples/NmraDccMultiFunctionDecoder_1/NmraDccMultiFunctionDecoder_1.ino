@@ -1,4 +1,3 @@
-
 #include <NmraDcc.h>
 
 // Define the Arduino input Pin number for the DCC Signal 
