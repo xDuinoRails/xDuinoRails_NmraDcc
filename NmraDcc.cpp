@@ -40,6 +40,7 @@
 //            2019-02-17 added ESP32 specific changes by Hans Tanner
 //            2020-05-15 changes to pass NMRA Tests ( always search for preamble )
 //            2021-03-11 fix ESP32 bug on interrupt reinitialisation
+//            2025-02-17 First merge with the "MotorolaMaerklin" library.
 //------------------------------------------------------------------------
 //
 // purpose:   Provide a simplified interface to decode NMRA DCC packets
@@ -1798,7 +1799,7 @@ void NmraDcc::PinChange() {
 ////////////////////////////////////////////////////////////////////////
 
 #ifdef digitalPinToInterrupt
-void NmraDcc::pin(uint8_t ExtIntPinNum, uint8_t EnablePullup)
+void NmraDcc::pin (uint8_t ExtIntPinNum, uint8_t EnablePullup)
 {
     pin (digitalPinToInterrupt (ExtIntPinNum), ExtIntPinNum, EnablePullup);
 }
@@ -1845,9 +1846,9 @@ void NmraDcc::initAccessoryDecoder (uint8_t ManufacturerId, uint8_t VersionId, u
 ////////////////////////////////////////////////////////////////////////
 void NmraDcc::init (uint8_t ManufacturerId, uint8_t VersionId, uint8_t Flags, uint8_t OpsModeAddressBaseCV)
 {
-    #if defined(ESP8266) ||  defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#if defined(ESP8266) ||  defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
     EEPROM.begin (MAXCV);
-    #endif
+#endif
     // Clear all the static member variables
     memset (&DccRx, 0, sizeof (DccRx));
 
@@ -1868,12 +1869,12 @@ void NmraDcc::init (uint8_t ManufacturerId, uint8_t VersionId, uint8_t Flags, ui
     ISRLevel = DccProcState.ExtIntMask;
     ISRChkMask = DccProcState.ExtIntMask;
 
-    #if defined(ESP32)|| defined ( ARDUINO_ARCH_RP2040)
+#if defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
     ISRWatch = ISREdge;
     attachInterrupt (DccProcState.ExtIntNum, ExternalInterruptHandler, CHANGE);
-    #else
+#else
     attachInterrupt (DccProcState.ExtIntNum, ExternalInterruptHandler, RISING);
-    #endif
+#endif
 
     // Set the Bits that control Multifunction or Accessory behaviour
     // and if the Accessory decoder optionally handles Output Addressing
