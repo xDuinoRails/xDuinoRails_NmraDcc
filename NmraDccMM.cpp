@@ -48,7 +48,7 @@
 //
 //------------------------------------------------------------------------
 
-#include "NmraDcc.h"
+#include "NmraDccMM.h"
 #ifdef ARDUINO_SAMD_ZERO
 #include <FlashStorage_SAMD.h>
 #else

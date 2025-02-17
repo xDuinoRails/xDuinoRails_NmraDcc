@@ -1,5 +1,5 @@
 
-#include <NmraDcc.h>
+#include <NmraDccMM.h>
 
 // Define the Arduino input Pin number for the DCC Signal 
 #define DCC_PIN     2
