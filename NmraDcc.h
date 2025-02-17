@@ -301,14 +301,11 @@ private:
     DCC_MSG Msg ;
 
 public:
-
-    //MaerklinMotorola(int p);
     NmraDcc(int p);
     void PinChange();
     MaerklinMotorolaData* GetData();
     void Parse();
 
-    NmraDcc();
 
 // Flag values to be logically ORed together and passed into the init() method
 #define FLAGS_MY_ADDRESS_ONLY        0x01   // Only process DCC Packets with My Address
