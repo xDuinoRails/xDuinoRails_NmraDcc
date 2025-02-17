@@ -1,7 +1,10 @@
-# NmraDcc
-NMRA Digital Command Control (DCC) Library
+# NmraDccMM
 
-This library allows you to interface to a NMRA DCC track signal and receive DCC commands.
+This library marries two great existing libraries into one:
+- The NMRA Digital Command Control (DCC) Library of 'mrrwa': https://github.com/mrrwa/NmraDcc
+- The Märklin-Motorola library of of 'LaserLicht': https://github.com/Laserlicht/MaerklinMotorola
+
+This library allows you to interface to a NMRA DCC track signal and receive DCC as well as Märklin Motorola commands.
 
 The library currently supports the AVR ATTiny84/85 & ATMega88/168/328/32u4 and Teensy 3.x using the INT0/1 Hardware Interrupt and micros() ONLY and no longer uses Timer0 Compare Match B, which makes it much more portable to other platforms.
 
